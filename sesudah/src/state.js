@@ -1,8 +1,9 @@
-import { muatCatatan, simpanCatatan } from './storage.js';
+import { muat, simpan } from './storage.js';
 
-let catatan = muatCatatan();
+let catatan = muat();
 
 export function semua() {
+  catatan = muat();
   return catatan;
 }
 
@@ -15,20 +16,20 @@ export function tambah(judul, mk) {
     disematkan: false,
   };
   catatan = [...catatan, itemBaru];
-  simpanCatatan(catatan);
-  return itemBaru;
+  const tersimpan = simpan(catatan);
+  return { item: itemBaru, tersimpan };
 }
 
 export function alihSemat(id) {
   catatan = catatan.map((item) =>
     item.id === id ? { ...item, disematkan: !item.disematkan } : item
   );
-  simpanCatatan(catatan);
+  return simpan(catatan);
 }
 
 export function hapus(id) {
   catatan = catatan.filter((item) => item.id !== id);
-  simpanCatatan(catatan);
+  return simpan(catatan);
 }
 
 export function cari(kata) {
